@@ -1,0 +1,136 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学工网德育分审批 | 登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <script type="text/javascript" src="{% static 'js/jquery-3.1.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap4.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
+    <link href="{% static 'css/bootstrap4.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+    {{ alert|safe }}
+</head>
+<body class="background-fill" style="background: url({% static 'image/index-bj.jpg' %})">
+<div class="container-fluid">
+    <div class="row">
+        <div class="info col-5 jumbotron" style="background-color:rgba(0,0,0,0);">
+            <h4 style="text-align: center">学工网审批学生活动网站使用提示</h4>
+            <p>登录账号密码为学工网的账号密码，如果登录有问题，会弹出错误提示。</p>
+            <p>
+                点击登录后页面会稍微暂停一下，这是后台接受到请求，然后开始下载最新的<strong>等待审批</strong>
+                的学生申请。并且会把每一个申请的图片都下载下来，所以会稍微有点占用网络带宽。
+            </p>
+            <p>启动网站打开的 cmd 窗口请勿关闭，关闭了将会接受不到所有的请求。不使用的时候就可以关闭了。</p>
+
+            <p>这个网站的基本原理：利用爬虫技术，把所有等待审批的申请信息全部下载下来，然后展示到一个网页上。
+                通过加了一层壳的办法，大大减少了审批德育/智育分需要的时间。</p>
+            <p><strong>请尽量使用Chrome、Firefox、QQ浏览器等兼容性良好的浏览器，避免使用IE浏览器。</strong></p>
+            <a class="float-right"><a href="https://www.jianshu.com/u/9f41384606fa" target="_blank"
+                                         style="color: #000000">简书</a>
+        </div>
+        <div class="col-2"></div>
+        <div class="login col-5" style="margin-top: 140px;">
+            <div class="mx-auto card" style="width: 350px">
+                <div class="card-header mx-auto">登录</div>
+                <form class="card-body" name="form1" method="post" action="{% url 'login' %}" id="form1">
+                    <div>
+                        <input name="__VIEWSTATE" id="__VIEWSTATE" value="{{ view_state }}" type="hidden">
+                    </div>
+                    <div>
+                        {% csrf_token %}
+                        <input name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="{{ view_state_generator }}"
+                               type="hidden">
+                        <input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="{{ event_validation }}"
+                               type="hidden">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-inline">
+                            用户名：
+                            <input class="form-control" name="UserName" id="UserName" type="text" value="{{ username }}">
+                        </label>
+
+                        <label class="form-inline">
+                            &emsp;密码：
+                            <input class="form-control" name="UserPass" id="UserPass" type="password" value="{{ password }}">
+                        </label>
+                        <label class="form-inline">
+                            验证码：
+                            <div class="input-group">
+                                <input class="form-control" name="CheckCode" maxlength="5" id="CheckCode" type="text"
+                                       style="width: 137px">
+                                <div class="input-group-append">
+                                    <img src="{% static 'captcha.jpg' %}">
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-success" style="width: 120px; margin-left: 100px;" type="submit">登录
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">重要提示</h4>
+            </div>
+            <div class="modal-body">
+                检测到你上一次使用本网站是 {{ last_login }} 。如果马上登录会保存之前的审批情况记录，这会造成你本次审批的困扰，
+                请先清除上一次的审批记录再进行登录。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
+                <button type="button" id="flush" class="btn btn-primary">清除历史记录</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+</body>
+<script type="text/javascript">
+    {% if need_alert %}
+    $('#myModal').modal('show');
+    {% endif %}
+    var flush_data = $('#flush');
+    function flush_db() {
+        if (confirm("你确定要清空数据库的信息吗？")) {
+            flush_data.html('清除中...');
+            flush_data.addClass('disabled');
+            $.ajax({
+                type: 'GET',
+                url: '/flush_db',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        alert('清除成功！');
+                        flush_data.html('已清除');
+                    } else {
+                        alert('清除失败！:' + data.msg);
+                        flush_data.html('清空数据库数据');
+                    }
+                    flush_data.removeClass('disabled');
+                },
+                error: function (data) {
+                    alert('清空请求失败！http code:' + data.status);
+                    flush_data.html('清空数据库数据');
+                    flush_data.removeClass('disabled');
+                }
+            });
+        }
+    }
+
+    $(document).on('click', '#flush', function () {
+        flush_db();
+    });
+</script>
+</html>

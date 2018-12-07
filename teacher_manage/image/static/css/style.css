@@ -1,0 +1,169 @@
+*{
+	margin:0px;
+	padding:0px;
+	font-size: 14px;
+	font-family: "宋体";
+	outline: none;
+}
+body{
+	margin:0;
+	padding:0;
+}
+a:link,a:active,a:visited{
+	border:none;
+}
+.container{
+	width:100%;
+	padding-top: 20px;
+	background-color:#f9f9f9; 
+}
+input[type="text"]{
+	width:150px;
+	height:25px;
+}
+input[name="scoreInput"]{
+	width:66px;
+}
+input[type="button"]:focus{
+	border-color:transparent;
+	outline:none;
+	/*outline: 0;*/
+}
+.nav-search{
+	width:100%;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 2px;
+	padding-left: 60px;
+	border: 1px solid #f1f1f1;
+	border-bottom:2px solid #0677bb;
+	background-image: linear-gradient(to bottom,#fff,#AFE0E5);
+}
+.dropdown-menu li{
+	border-bottom: 1px solid #f1f1f1;
+}
+table tr td,table tr th{
+	line-height: 120px;
+	text-align: center;
+}
+table tr:nth-child(2n){
+	background-color: #f3f8f3;
+}
+table tr:nth-child(2n+1){
+	background-color: #fff;
+}
+table tr td:last-child,table tr th:last-child{
+	min-width: 150px;
+}
+table tr td:nth-child(3),table tr th:nth-child(3){
+	max-width: 320px;
+}
+.activName{
+	/*color: #544cce;*/
+}
+.activType{
+	width:300px;
+	height: 25px;
+	margin-top: 15px;
+}
+.theImg{
+	width:90px;
+	height:90px;
+	margin:0 auto;
+	text-align: center;
+	cursor: pointer;
+	border:none;
+	/*border:1px solid #e1e1e1;*/
+}
+.theImg:hover{
+	border:none;
+	transform: scale(1.1);
+	transition: 0.3s;
+}
+#bigImg{
+	width:100%;
+	margin:0 auto;
+	display: inline;
+	float:left;
+	height:auto;
+	overflow: visible;
+}
+.thePage{
+	cursor: pointer;
+}
+.modal-content{
+	background-color: transparent;
+	border:none;
+	box-shadow:0;
+	height: auto;
+	overflow: visible;
+}
+
+.icons{
+	width:100%;
+	margin-top: 10px;
+	text-align: center;
+	float:left;
+}
+.icons span{
+	font-size: 18px;
+	font-weight: 600;
+	margin:5px 10px;
+	cursor: pointer;
+}
+.icons span:hover{
+	color:gray;
+}
+.rightRotate{
+	transform:rotate(180deg);
+}
+.Category{
+	max-width:96%;
+	padding: 5px 10px;
+	color:#da0707;
+	text-align: left;
+	border: 1px solid #727272;;
+	background-color:#eaf1f3;
+	border-radius: 3px;
+	box-shadow: 2px 2px 2px #e1e1e1;
+	position: relative;
+	z-index:999;
+	top: 10px;
+	padding: 5px;
+	left: 10px;
+	display: none;
+}
+.activName:hover{
+	cursor: pointer;
+}
+#other .btn{
+	margin-bottom: 15px;
+}
+.tooltip-inner{
+	max-width: 400px;
+	min-width: 150px;
+	background-color: #d4edda;
+	color: #155724;
+	border-color: #c3e6cb;
+}
+.judge-pass{
+	color: #28a745;
+}
+.judge-refuse{
+	color: #b21f2d;
+}
+
+td .btn-success{
+	color: #5cb85c;
+	background-color: #ffffff;
+	border-color: #5cb85c;
+}
+
+td .btn-danger{
+	color: #ac2925;
+	background-color: #ffffff;
+	border-color: #ac2925;
+}
+
+
+

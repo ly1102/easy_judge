@@ -1,0 +1,108 @@
+body 
+{
+    margin-top: 0px; 
+    margin-right: 0px;
+     margin-bottom: 0px; 
+     margin-left: 0px;
+/*  SCROLLBAR-FACE-COLOR: #0d93d9; 
+  SCROLLBAR-HIGHLIGHT-COLOR:#EDF4FD; 
+  SCROLLBAR-SHADOW-COLOR: #EDF4FD; 
+  SCROLLBAR-3DLIGHT-COLOR: #0d93d9; 
+  SCROLLBAR-ARROW-COLOR: #EDF4FD; 
+  SCROLLBAR-TRACK-COLOR: #EDF4FD; 
+  SCROLLBAR-DARKSHADOW-COLOR: #0d93d9;
+*/
+}
+
+a:link {font-family: "宋体";font-size: 12px;color: #303030;text-decoration: none;}
+a:visited {	font-family: "宋体";font-size: 12px;color: #303030;text-decoration: none;}
+a:hover {font-family: "宋体";font-size: 12px;color: #660000;}
+a:active {font-family: "宋体";font-size: 12px;color: #303030;text-decoration: none;}
+ 
+.innerbox
+{
+	padding:1px 2px 1px 2px;
+	background-color:#74CCFC;
+}
+a:active {
+	font-family: "宋体";
+	font-size: 12px;
+	color: #FF0000;
+	text-decoration: none;
+
+}
+td {
+	font-family: "宋体";
+	font-size: 12px;
+}
+.navtitle {
+	font-size: 12px;
+	filter: DropShadow(Color=FFFFFF, OffX=2, OffY=2, Positive=true);
+	font-weight: bold;
+	color: #00486D;
+}
+.input{
+border-top:1px solid #2C2D2C;
+border-left:1px solid #2C2D2C;
+border-bottom:1px solid #CDCDCD;
+border-right:1px solid #CDCDCD;
+}
+.normal_input
+{
+	border:1px solid #84a1bd;
+	background-color:#fff;
+	height:18px;
+	}
+.normal_botton 
+{
+   BORDER-RIGHT: #2C59AA 1px solid;
+   PADDING-RIGHT: 2px;
+   BORDER-TOP:#2C59AA 1px solid;
+   PADDING-LEFT: 2px;
+   FONT-SIZE: 12px;
+   FILTER:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#ffffff, EndColorStr=#C3DAF5); BORDER-LEFT: #2C59AA 1px solid; CURSOR: hand;
+   COLOR: black; PADDING-TOP: 2px;
+   BORDER-BOTTOM: #2C59AA 1px solid
+  } 
+ .showDiv
+ {
+	background-color:#CCCCCC;
+	border-width:1px;
+	border-color:#666666;
+	}
+.info 
+{
+	position:relative;
+	background:#fff;color:#666;
+	 text-decoration:none;font-size:12px;
+	 width:150px;text-align:center;
+	 border:1px solid #ccc;height:25px;
+	 line-height:25px;
+	}
+.info:hover 
+{
+	background:#eee;
+	color:#333;
+	}
+.info span 
+{
+	display: none 
+	}
+.info:hover span 
+{
+	display:block;
+	position:absolute;
+	top:30px;
+	left:60px;
+	width:130px;
+	border:1px solid #ff0000;
+	 background:#fff; 
+	 color:#000;
+	 padding:5px;
+	 text-align:left;
+	}
+.TableBlack
+{
+	background-color:#0677bb;
+}
+	

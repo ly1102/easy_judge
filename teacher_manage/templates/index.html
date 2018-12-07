@@ -1,0 +1,126 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <title>信息管理</title>
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/viewer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/viewer.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
+    <script type="text/javascript" src="{% static 'js/jquery-viewer.js' %}"></script>
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container-fluid">
+    <div class="nav-search form-inline form-horizontal form-group" style="height: 120%">
+        <strong>查询条件：</strong>&nbsp;&nbsp;
+        <span style="color:red;">学年：</span>
+        <!-- option开始 -->
+        <select class="form-control" id="year" style="height: 80%">
+            <option value="" selected="selected">全部</option>
+        </select>
+        <!-- option结束 -->
+        <span style="color:red;">审批状态：</span>
+        <!-- option开始 -->
+        <select class="form-control" id="type" style="height: 80%">
+            <option value="等待审批" selected="selected">等待审批</option>
+            <option value="审批通过">审批通过</option>
+            <option value="审批打回">审批打回</option>
+            <option value="all">全部</option>
+        </select>
+        <!-- option结束 -->
+        &nbsp;&nbsp;&nbsp;&nbsp;班级：
+        <!-- option开始 -->
+        <select class="form-control" id="theClass" style="height: 80%">
+            <option value="" selected="selected">请选择</option>
+            <option value="网络151">网络151</option>
+            <option value="网络152">网络152</option>
+            <option value="网络153">网络153</option>
+        </select>
+        <!-- option结束 -->
+        &nbsp;&nbsp;&nbsp;&nbsp;学号：<input class="form-control" maxlength="10" id="stuNumber" type="text"
+                                          name="stuNumber" style="max-width: 100px;"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;姓名：<input class="form-control" id="stuName" type="text" name="stuName"
+                                          style="max-width: 100px;"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="search()" class="btn btn-primary btn-sm">查询
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr class="info">
+            <th>学号</th>
+            <th>姓名</th>
+            <th>活动内容</th>
+            <th>类型</th>
+            <th>加分数</th>
+            <th>证明材料</th>
+            <th>审核状态</th>
+            <th>审批意见</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="table">
+
+        </tbody>
+    </table>
+    <div class="container">
+        <div class="row float-right">
+            <div id="other" class="float-left col-lg-4 col-md-4 col-sm-6 col-xs-8" style="margin-top: auto; margin-bottom: auto;">
+                <div class="btn btn-warning" id="flush" data-toggle="tooltip" title="点击之后，会清除当前网站的数据库已经保存的信息，下一次登录会重新和学工处网站同步。用于新的一个学年审批前清除去年的记录。">清空本地数据</div>
+                <div class="btn btn-success" id="log-out" data-toggle="tooltip" title="用于切换账号登录。本网站可以和浏览器登录的学工处网站同时使用">退出登录</div>
+                <div class="btn btn-info" id="get-new" data-toggle="tooltip" title="点击之后立即同步学工处的最新审批活动(需要一定时间才能完成)">获取最新数据</div>
+                <div class="dropdown btn btn-default dropup">
+                    <div href="#" class="dropdown-toggle" data-toggle="dropdown">
+					导出到表格
+					<b class="caret"></b>
+				</div>
+				<ul class="dropdown-menu">
+					<li><a href="#" id="xls" data-toggle="tooltip" title="导出当前过滤条件下所有申请到xls文件">导出到xls表格(excel 2003-2010)</a></li>
+					<li><a href="#" id="xlsx" data-toggle="tooltip" title="导出当前过滤条件下所有申请到xlsx文件">导出到xslx表格(excel 2010+)</a></li>
+                </ul>
+                </div>
+            </div>
+            <!--  分页开始 -->
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-4">
+                <ul class="pull-right pagination" id="pagination" style="margin-top: 0px;font-size:18px;">
+                    <li class="disabled"><a href="#" aria-label="Previous">&laquo;</a></li>
+                    <li class="active thePage" data-page='1'><a href="#">1 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="thePage" data-page='2'><a>2 <span class="sr-only">(current)</span></a></li>
+                    <li class="thePage" data-page='3'><a>3 <span class="sr-only">(current)</span></a></li>
+                    <li class=""><a href="#" aria-label="Previous">&raquo;</a></li>
+                </ul>
+            </div>
+            <!--  分页结束 -->
+        </div>
+    </div>
+
+    <div id="outer-img" style="display: none">
+        <img id="image" src="{% static 'image/b-bj.jpg' %}" alt="Picture" style="display: none">
+    </div>
+</div>
+</body>
+<script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+        });
+        var init = {{ is_init }};
+    </script>
+<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+</html>
+
+
