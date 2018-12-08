@@ -66,6 +66,7 @@ class LoginView(View):
         login_res = conn.get(login_url, headers=header)
         login_page = LoginPage(login_res.content)
         input_dict = login_page.get_all_hidden_input()
+        rsa_operation = login_page.get_rsa_operation()
 
         view_state = ''
         view_state_generator = ''
@@ -121,6 +122,7 @@ class LoginView(View):
             'event_validation': event_validation,
             'need_alert': need_alert,
             'last_login': last_login,
+            'rsa_operation':rsa_operation,
             'username': username,
             'password': password
         })
@@ -133,6 +135,7 @@ class LoginView(View):
         password = request.POST.get("UserPass", '')
         check_code = request.POST.get("CheckCode", "")
         view_state = request.POST.get('__VIEWSTATE', '')
+        rsa_posx = request.POST.get('posx', '')
         view_state_generator = request.POST.get('__VIEWSTATEGENERATOR', '')
         event_validation = request.POST.get('__EVENTVALIDATION', '')
 
@@ -143,6 +146,7 @@ class LoginView(View):
             'UserName': user_name,
             'UserPass': password,
             'CheckCode': check_code,
+            'posx': rsa_posx,
             'Btn_OK.x': '25',
             'Btn_OK.y': '26',
         }
@@ -180,6 +184,7 @@ class LoginView(View):
             login_res = conn.get(login_url, headers=header)
             login_page = LoginPage(login_res.content)
             input_dict = login_page.get_all_hidden_input()
+            rsa_operation = login_page.get_rsa_operation()
 
             view_state = ''
             view_state_generator = ''
@@ -236,6 +241,7 @@ class LoginView(View):
                 'event_validation': event_validation,
                 'need_alert': need_alert,
                 'last_login': last_login,
+                'rsa_operation':rsa_operation,
                 'username': username,
                 'password': password
             })

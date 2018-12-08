@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}"/>
     <link href="{% static 'css/bootstrap4.css' %}" rel="stylesheet">
     <link href="{% static 'css/login.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/Barrett.js' %} "></script>
+    <script type="text/javascript" src="{% static 'js/BigInt.js' %} "></script>
+    <script type="text/javascript" src="{% static 'js/CodeManage.js' %} "></script>
+    <script type="text/javascript" src="{% static 'js/RSA.js' %} "></script>
     {{ alert|safe }}
 </head>
 <body class="background-fill" style="background: url({% static 'image/index-bj.jpg' %})">
@@ -37,7 +41,7 @@
         <div class="login col-5" style="margin-top: 140px;">
             <div class="mx-auto card" style="width: 350px">
                 <div class="card-header mx-auto">登录</div>
-                <form class="card-body" name="form1" method="post" action="{% url 'login' %}" id="form1">
+                <form class="card-body" name="form1" method="post" action="{% url 'login' %}" id="form1" onsubmit="cmdEncrypt()">
                     <div>
                         <input name="__VIEWSTATE" id="__VIEWSTATE" value="{{ view_state }}" type="hidden">
                     </div>
@@ -47,6 +51,8 @@
                                type="hidden">
                         <input name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="{{ event_validation }}"
                                type="hidden">
+                        <input type="hidden" name="posx" id="posx" />
+
                     </div>
                     <div class="form-group">
                         <label class="form-inline">
@@ -134,5 +140,12 @@
     $(document).on('click', '#flush', function () {
         flush_db();
     });
+    
+    function cmdEncrypt() {
+            {{ rsa_operation|safe }}
+            return true
+       }
+
+    
 </script>
 </html>

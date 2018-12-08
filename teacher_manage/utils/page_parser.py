@@ -26,6 +26,16 @@ class LoginPage:
             # print(h_input['name'], h_input['value'])
         return input_dict
 
+    def get_rsa_operation(self):
+        script = self.soup.find('script', text=re.compile(r'.*? = new RSAKeyPair\(.*?\);'))
+        # print(script.text.strip())
+        operations = re.search(r'\{([\s\S]*)\}', script.text)
+        # print(operations.group(1).strip())
+        operation_lines = operations.group(1).split('\n')
+        new_operation = [i.replace('\r', '') if '***' not in i else '' for i in operation_lines]
+        # print('\n'.join(new_operation))
+        return '\n'.join(new_operation)
+
     def get_login_ok_alert(self):
         alert = self.soup.find('script')
         # print(alert)
@@ -66,6 +76,9 @@ class ApplyListPage:
     def get_all_apply_href(self):
         table = self.soup.find('table', id="GridView1")
         all_href = []
+        if not table:
+            print("空申请列表")
+            return []
         for a_tag in table.find_all('a'):
             href = a_tag['href']
             if 'javascript' in href:
