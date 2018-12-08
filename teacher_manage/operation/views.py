@@ -1,5 +1,6 @@
 import os
 import io
+import csv
 import json
 import math
 import time
@@ -10,45 +11,59 @@ import datetime
 import xlsxwriter
 from django.views import View
 from django.shortcuts import render
+from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from operation.models import Apply, BonusCategory, BonusDetail, Cookies, UserAccount
 from utils.conn_operation import store_conn_cookies, get_conn_cookies, CrawThread, ApplyCrawThread, StoreImage, \
     apply_operation
 from utils.page_parser import LoginPage
-from web_manage.settings import MEDIA_URL, STATIC_URL
+from web_manage.settings import MEDIA_URL, STATIC_URL, BASE_DIR
 
 
 # Create your views here.
 
 
-# def json_response(func):
-#     """
-#     A decorator thats takes a view response and turns it
-#     into json. If a callback is added through GET or POST
-#     the response is JSONP.
-#     """
-#
-#     def decorator(request, *args, **kwargs):
-#         objects = func(request, *args, **kwargs)
-#         if isinstance(objects, HttpResponse):
-#             return objects
-#         try:
-#             data = json.dumps(objects)
-#             if 'callback' in request.REQUEST:
-#                 # a jsonp response!
-#                 data = '%s(%s);' % (request.REQUEST['callback'], data)
-#                 return HttpResponse(data, "text/javascript")
-#         except:
-#             data = json.dumps(str(objects))
-#         response = HttpResponse(data, content_type="application/json")
-#         response['Access-Control-Allow-Origin'] = '*'
-#         return response
-#
-#     return decorator
+def check_init_data():
+    """
+    检查数据库是否已经存在获奖类型数据，如果没有则插入数据
+    :return: None
+    """
+    # 第一次初始化数据库，奖励数据不存在就重新插入
+    if BonusCategory.objects.all().count() == 0:
+        print("开始初始化奖励大类数据")
+        with open(os.path.join(BASE_DIR, 'image', 'static', 'init_data', 'operation_bonuscategory.csv'), "r",
+                  encoding='utf-8') as c_fp:
+            reader = csv.reader(c_fp)
+            all_categories = []
+            for line in reader:
+                line = [None if i == "NULL" else i for i in line]
+                id_, content, limit, bonus_type, score, is_changeable, max_score, min_score = line
+                all_categories.append(BonusCategory(id=id_, content=content, limit=limit, score=score,
+                                                    is_changeable=is_changeable, min_score=min_score,
+                                                    max_score=max_score, bonus_type=bonus_type))
+            BonusCategory.objects.bulk_create(all_categories)
+
+    if BonusDetail.objects.all().count() <= 20:
+        print("开始初始化奖励细分类数据")
+        with open(os.path.join(BASE_DIR, 'image', 'static', 'init_data', 'operation_bonusdetail.csv'), 'r',
+                  encoding='utf-8') as cd_fp:
+            reader = csv.reader(cd_fp)
+            all_details = []
+            for line in reader:
+                line = [None if i == "NULL" else i for i in line]
+                id_, selection, score, is_changeable, min_score, max_score, bonus_category_id = line
+                all_details.append(BonusDetail(id=id_, bonus_category_id_id=bonus_category_id, selection=selection,
+                                               score=score, is_changeable=is_changeable, min_score=min_score,
+                                               max_score=max_score))
+            BonusDetail.objects.bulk_create(all_details)
+        print('初始化数据完成')
+        return
+    print('没有数据需要初始化')
 
 
 class LoginView(View):
     def get(self, request):
+        check_init_data()
         conn = requests.session()
         header = {
             'Host': 'xsc.cuit.edu.cn',
@@ -90,7 +105,6 @@ class LoginView(View):
             with open(captcha_path, 'wb') as fp:
                 fp.write(captcha_res.content)
             alert = ''
-
         store_conn_cookies(conn)
 
         last_logins = UserAccount.objects.all().values('last_login')
@@ -115,6 +129,7 @@ class LoginView(View):
             password = last_user.password
         else:
             username = password = ''
+
         return render(request, 'new_login.html', {
             'alert': alert,
             'view_state': view_state,
@@ -294,7 +309,8 @@ class ApplyListView(View):
                 examined_status = False
 
             if key == "stu_id":
-                all_apply = Apply.objects.filter(stu_id=value, is_add_score=is_add_score, user=user).order_by("stu_id")
+                all_apply = Apply.objects.filter(stu_id=value, is_add_score=is_add_score, user=user).order_by(
+                    "stu_id")
             elif key == "stu_name":
                 all_apply = Apply.objects.filter(stu_name=value, is_add_score=is_add_score, user=user).order_by(
                     "stu_id")
@@ -807,3 +823,8 @@ class ExportView(View):
             response.write(output.getvalue())
 
         return response
+
+
+class TransImageView(View):
+    def get(self):
+        pass

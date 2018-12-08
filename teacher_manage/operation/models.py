@@ -17,7 +17,7 @@ class BonusCategory(models.Model):
     is_changeable = models.BooleanField(default=False, verbose_name="分数是否可改")
     min_score = models.FloatField(null=True, verbose_name="最低分")
     max_score = models.FloatField(null=True, verbose_name="最高分")
-    Bonus_type = models.CharField(max_length=10, verbose_name="加分类型:德育/智育")
+    bonus_type = models.CharField(max_length=10, verbose_name="加分类型:德育/智育")
 
 
 class UserAccount(models.Model):
