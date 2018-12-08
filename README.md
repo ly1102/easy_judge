@@ -35,3 +35,10 @@
 简书地址：
 https://www.jianshu.com/p/f6708e8431e9
 
+效果展示：
+
+![审批主界面展示](https://github.com/ly1102/easy_judge/blob/master/teacher_manage/image/example_pic/apply_list.png)
+
+![申请材料图片在当前页面放大缩小翻转都支持](https://github.com/ly1102/easy_judge/tree/master/teacher_manage/image/example_pic/apply_image.png)
+
+
