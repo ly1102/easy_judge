@@ -182,7 +182,7 @@ class LoginView(View):
         login_res = conn.post(login_url, headers=header, data=data)
         login_page = LoginPage(login_res.content)
         alert = login_page.get_login_ok_alert()
-        if alert:
+        if alert or len(login_res.content) <= 1200:
             header = {
                 'Host': 'xsc.cuit.edu.cn',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55.0',

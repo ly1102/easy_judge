@@ -32,6 +32,13 @@
 - 导出审批内容到excel表格，方便让同学查看申请被打回的原因
 - 多账号登录，学生申请不会串到一起，只会显示自己账号的
 
+
+### 2018-12-08更新：
+
+- 现在申请的图片也不会下载到本地了，而是直接转发请求到原来的网站，加入了缓存机制，打开已经加载过的图片速度更快了。
+- 年代久远被删掉的图片会被404图片所代替，观感好多了
+- 已支持新版的非对称密钥登录
+
 简书地址：
 https://www.jianshu.com/p/f6708e8431e9
 
@@ -39,6 +46,6 @@ https://www.jianshu.com/p/f6708e8431e9
 
 ![审批主界面展示](https://github.com/ly1102/easy_judge/blob/master/teacher_manage/image/example_pic/apply_list.png)
 
-![申请材料图片在当前页面放大缩小翻转都支持](https://github.com/ly1102/easy_judge/tree/master/teacher_manage/image/example_pic/apply_image.png)
+![申请材料图片展示](https://github.com/ly1102/easy_judge/tree/master/teacher_manage/image/example_pic/apply_image.png)
 
 
