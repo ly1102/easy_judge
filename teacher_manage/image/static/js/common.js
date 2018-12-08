@@ -173,7 +173,7 @@ function getData(page, stuName, stuClass, stuNumber, type, year) {
                 if (obj.apply_image == null) {
                     html += '<td>用户没有上传图片</td>';
                 } else {
-                    html += '<td><img class="theImg" alt="' + obj.stu_name + '-' + obj.apply_content + '" src="' + obj.apply_image + '"/></td>';
+                    html += '<td><img class="theImg" alt="' + obj.stu_name + '-' + obj.apply_content + '" src="' + obj.apply_image + '" onerror="this.src = \'/image/static/image/404.jpg\'"/></td>';
                 }
                 if (obj.apply_status.indexOf('通过') !== -1) {
                     html += '<td class="judge-type judge-pass">' + obj.apply_status + '</td>';

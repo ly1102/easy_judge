@@ -404,15 +404,15 @@ def download_new_data():
     apply_craw1 = ApplyCrawThread(conn, queue1, image_queue)
     apply_craw2 = ApplyCrawThread(conn, queue1, image_queue)
 
-    parent_dir = os.path.abspath(os.path.dirname(__file__) + os.path.sep + "..")
-    image_crawl1 = StoreImage(conn, image_queue, parent_dir)
-    image_crawl2 = StoreImage(conn, image_queue, parent_dir)
+    # parent_dir = os.path.abspath(os.path.dirname(__file__) + os.path.sep + "..")
+    # image_crawl1 = StoreImage(conn, image_queue, parent_dir)
+    # image_crawl2 = StoreImage(conn, image_queue, parent_dir)
 
     crawl_apply_list.start()
     apply_craw1.start()
     apply_craw2.start()
-    image_crawl1.start()
-    image_crawl2.start()
+    # image_crawl1.start()
+    # image_crawl2.start()
     store_conn_cookies(conn)
 
 

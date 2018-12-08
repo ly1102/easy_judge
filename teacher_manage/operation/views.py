@@ -11,8 +11,8 @@ import datetime
 import xlsxwriter
 from django.views import View
 from django.shortcuts import render
-from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.utils.http import http_date
 from operation.models import Apply, BonusCategory, BonusDetail, Cookies, UserAccount
 from utils.conn_operation import store_conn_cookies, get_conn_cookies, CrawThread, ApplyCrawThread, StoreImage, \
     apply_operation
@@ -284,15 +284,15 @@ class LoginView(View):
             apply_craw1 = ApplyCrawThread(conn, queue1, image_queue)
             apply_craw2 = ApplyCrawThread(conn, queue1, image_queue)
 
-            parent_dir = os.path.abspath(os.path.dirname(__file__) + os.path.sep + "..")
-            image_crawl1 = StoreImage(conn, image_queue, parent_dir)
-            image_crawl2 = StoreImage(conn, image_queue, parent_dir)
+            # parent_dir = os.path.abspath(os.path.dirname(__file__) + os.path.sep + "..")
+            # image_crawl1 = StoreImage(conn, image_queue, parent_dir)
+            # image_crawl2 = StoreImage(conn, image_queue, parent_dir)
 
             crawl_apply_list.start()
             apply_craw1.start()
             apply_craw2.start()
-            image_crawl1.start()
-            image_crawl2.start()
+            # image_crawl1.start()
+            # image_crawl2.start()
             store_conn_cookies(conn)
             time.sleep(2)
             return HttpResponseRedirect("/init?init=1")
@@ -826,5 +826,16 @@ class ExportView(View):
 
 
 class TransImageView(View):
-    def get(self):
-        pass
+    def get(self, request, img_name):
+        is_modify = request.META.get("HTTP_IF_MODIFIED_SINCE", '')
+        if is_modify:
+            print('缓存图片')
+            return HttpResponse(status=304)
+        # print('远程图片')
+        res = requests.get("http://xsc.cuit.edu.cn/Sys/DownLoad/StudentJudge/{}".format(img_name))
+        if res.status_code != 200:
+            return HttpResponse(status=res.status_code)
+        print('远程图片')
+        response = HttpResponse(content=res.content, content_type="image/webp,image/apng")
+        response['Last-Modified'] = http_date()
+        return response

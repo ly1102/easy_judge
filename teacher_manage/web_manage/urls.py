@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.views.static import serve
 from django.views.generic.base import RedirectView
 from operation.views import LoginView, ApplyListView, ApplyInitView, UserOperation, ClassView,\
-    ClearDataView, ExitLoginView, GetNewDataView, YearView, ExportView
+    ClearDataView, ExitLoginView, GetNewDataView, YearView, ExportView, TransImageView
+
+def last_modify():
+    return True
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -35,7 +38,8 @@ urlpatterns = [
     url(r'^get_new_data$', GetNewDataView.as_view(), name="get_new_data"),
     url(r'^export$', ExportView.as_view(), name="export"),
     url(r'^favicon.ico$', RedirectView.as_view(url=r'/image/static/favicon.ico')),
-    # 配置上传文件的访问处理
+    url(r'^image/apply_image/(?P<img_name>.*)$', TransImageView.as_view(), name='trans_image'),
+    # 配置静态文件的访问处理
     url(r'^image/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
 ]
