@@ -3,6 +3,26 @@
 用爬虫和网站技术大大简化了对网站的操作，实现了兼容新浏览器，直接查看图片等功能
 
 
+# 使用说明
+1. 可以到[简书](https://www.jianshu.com/p/f6708e8431e9)查看内网下载链接
+2. 百度云盘：https://pan.baidu.com/s/1lGvcjM9hDlz_Zu2g6OBL_w   提取码：f94z
+3. 下载的文件解压后直接双击 **启动程序.bat** 就可以启动了。
+
+
+# requirements
+- django==1.11/
+- xlwt
+- xlsxwriter
+- requests
+- bs4
+
+# 源码使用说明
+安装完上述依赖之后，
+`python manage.py makemigrations`
+`python manage.py migrate`
+生成数据库文件，数据库的初始化数据会在每次访问 */* 页面的时候检查，如果没有数据会自动读取csv文件的初始数据并填充到数据库
+
+
 
 # 简介
 因为老版的德育审批网站已经很难适应现在这么复杂的需求
